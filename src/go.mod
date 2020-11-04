@@ -1,4 +1,4 @@
-module github.com/getstackhead/project-validator
+module github.com/saitho/jsonschema-validator
 
 go 1.13
 

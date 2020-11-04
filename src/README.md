@@ -11,5 +11,5 @@ go test
 ### Build binary
 
 ```shell script
-go build -o ../bin/project-validator
+go build -o ../bin/jsonschema-validator
 ```

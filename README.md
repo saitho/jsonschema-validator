@@ -6,7 +6,13 @@
 
 ## Usage
 
+*Note:* Right now both the schema and the file to be validated have to be located on the file system.
+
 ### Binary
+
+```
+bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/valid/enum1.yml
+```
 
 ### GoLang API
 

@@ -35,7 +35,7 @@ jobs:
 
     - name: Build
       working-directory: src
-      run: go build -v -o ../bin/project-validator .
+      run: go build -v -o ../bin/jsonschema-validator .
 
     - name: Test
       working-directory: src
