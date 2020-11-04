@@ -17,3 +17,17 @@ bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/vali
 ### GoLang API
 
 ### Docker container
+
+## Development
+
+### Run Tests
+
+```shell script
+go test
+```
+
+### Build binary
+
+```shell script
+go build -o bin/jsonschema-validator
+```
