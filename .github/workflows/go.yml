@@ -1,0 +1,59 @@
+name: Go
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      working-directory: src
+      run: |
+        go get -v -t -d ./...
+        if [ -f Gopkg.toml ]; then
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure
+        fi
+
+    - name: Build
+      working-directory: src
+      run: go build -v -o ../bin/project-validator .
+
+    - name: Test
+      working-directory: src
+      run: go test
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: PNPM install
+        run: npm i -g pnpm && pnpm i -P
+      - run: pnpm install
+      - name: Semantic Release Action
+        uses: saitho/semantic-release-action-pnpm@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

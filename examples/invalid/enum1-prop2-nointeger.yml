@@ -1,0 +1,8 @@
+---
+name: myname
+settings:
+  type: enum1
+  settings:
+    propContainer:
+      prop1: test
+      prop2: test

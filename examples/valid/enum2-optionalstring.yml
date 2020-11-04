@@ -1,0 +1,6 @@
+---
+name: myname
+settings:
+  type: enum2
+  settings:
+    optionalString: test

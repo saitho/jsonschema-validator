@@ -1,0 +1,4 @@
+---
+name: myname
+settings:
+  type: enum2

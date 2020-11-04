@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "author": "Mario Lubenka",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "semantic-release": "semantic-release",
+    "commit": "git-cz"
+  },
+  "devDependencies": {
+    "semantic-release": "^16.0.1",
+    "@semantic-release/commit-analyzer": "^7.0.0",
+    "@semantic-release/github": "^6.0.0",
+    "@semantic-release/release-notes-generator": "^7.3.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2"
+  }
+}
