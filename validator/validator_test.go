@@ -1,4 +1,4 @@
-package main
+package validator
 
 import (
 	"fmt"
@@ -28,18 +28,38 @@ func collectYamlFiles(folder string) []string {
 func getSchemaFile() string {
 	_, filename, _, _ := runtime.Caller(0)
 	binDir, _ := filepath.Abs(filepath.Dir(filename))
-	return filepath.Join(binDir, "schema", "project-definition.schema.json")
+	return filepath.Join(binDir, "..", "schema", "project-definition.schema.json")
 }
 
-func TestValidDdefinitions(t *testing.T) {
+func TestValidDefinitions(t *testing.T) {
 	Convey("test valid definitions", t, func() {
-		for _, file := range collectYamlFiles("examples/valid") {
+		for _, file := range collectYamlFiles("../examples/valid") {
 			Convey(fmt.Sprintf("file %s should validate", file), func() {
 				result, err := ValidateFile(file, getSchemaFile())
 				So(err, ShouldBeNil)
 				So(result, ShouldValidate)
 			})
 		}
+	})
+}
+
+func TestFolderTraversion(t *testing.T) {
+	Convey("test folder traversion", t, func() {
+		Convey("all files validate", func() {
+			results, err := ValidateDirectory("examples/valid", getSchemaFile())
+			So(err, ShouldBeNil)
+			for _, result := range results {
+				So(result, ShouldValidate)
+			}
+		})
+
+		Convey("validate all files and return error", func() {
+			results, err := ValidateDirectory("examples/invalid", getSchemaFile())
+			So(err, ShouldBeNil)
+			for _, result := range results {
+				So(result, ShouldNotValidate)
+			}
+		})
 	})
 }
 
@@ -53,13 +73,4 @@ func TestInvalidDefinitions(t *testing.T) {
 			})
 		}
 	})
-}
-
-func ShouldNotValidate(actual interface{}, _ ...interface{}) string {
-	result := ShouldValidate(actual)
-	if result == "" { // file validated
-		return "File validated (it should not)"
-	} else {
-		return ""
-	}
 }
