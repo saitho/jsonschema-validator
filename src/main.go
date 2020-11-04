@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path/filepath"
+	"regexp"
 
 	"github.com/ghodss/yaml"
 	"github.com/xeipuuv/gojsonschema"
@@ -27,11 +27,14 @@ func isInternalError(errorType string) bool {
 }
 
 // ValidateFile validates the contents of filePath with the schema
-func ValidateFile(filePath string) (*gojsonschema.Result, error) {
+func ValidateFile(filePath string, schemaPath string) (*gojsonschema.Result, error) {
 	var err error
 
-	binDir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	schemaLoader := gojsonschema.NewReferenceLoader("file://" + filepath.Join(binDir, "..", "schema", "project-definition.schema.json"))
+	matchRegex, err := regexp.MatchString("\\w+://", schemaPath)
+	if !matchRegex {
+		schemaPath = "file://" + schemaPath
+	}
+	schemaLoader := gojsonschema.NewReferenceLoader(schemaPath)
 
 	configData, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -39,6 +42,7 @@ func ValidateFile(filePath string) (*gojsonschema.Result, error) {
 	}
 
 	// YAML to JSON
+	// @todo: allow JSON files as well
 	configJson, err := yaml.YAMLToJSON(configData)
 	if err != nil {
 		return nil, err
@@ -67,12 +71,13 @@ func ShouldValidate(actual interface{}, _ ...interface{}) string {
 }
 
 func main() {
-	if len(os.Args) < 2 {
-		panic("Missing argument. Set the file out want to validate as first command argument.")
+	if len(os.Args) < 3 {
+		panic("Missing argument. Set the schema file path as first command argument and the file you want to validate as second argument.")
 	}
-	var filePath = os.Args[1]
+	var schemaPath = os.Args[1]
+	var filePath = os.Args[2]
 
-	result, err := ValidateFile(filePath)
+	result, err := ValidateFile(filePath, schemaPath)
 
 	if err != nil {
 		panic(err.Error())
@@ -80,7 +85,7 @@ func main() {
 
 	errorMessage := ShouldValidate(result)
 	if len(errorMessage) == 0 {
-		_, err = fmt.Fprintln(os.Stderr, "The project definition is valid")
+		_, err = fmt.Fprintln(os.Stdout, "VALID")
 	} else {
 		_, err = fmt.Fprintln(os.Stderr, errorMessage)
 		os.Exit(1)
