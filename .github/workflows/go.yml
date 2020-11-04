@@ -53,7 +53,7 @@ jobs:
       - name: PNPM install
         run: npm i -g pnpm && pnpm i -P
       - run: pnpm install
-      - name: Semantic Release Action
-        uses: saitho/semantic-release-action-pnpm@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      #- name: Semantic Release Action
+      #  uses: saitho/semantic-release-action-pnpm@master
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
