@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"strings"
 
 	"github.com/ghodss/yaml"
 	"github.com/xeipuuv/gojsonschema"
@@ -36,20 +37,31 @@ func ValidateFile(filePath string, schemaPath string) (*gojsonschema.Result, err
 	}
 	schemaLoader := gojsonschema.NewReferenceLoader(schemaPath)
 
-	configData, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	// YAML to JSON
-	// @todo: allow JSON files as well
-	configJson, err := yaml.YAMLToJSON(configData)
+	configJson, err := loadJsonFile(filePath)
 	if err != nil {
 		return nil, err
 	}
 	documentLoader := gojsonschema.NewBytesLoader(configJson)
 
 	return gojsonschema.Validate(schemaLoader, documentLoader)
+}
+
+// Loads the contents of a given JSON file.
+// If the file is a YAML/YML file, it will be converted to JSON
+func loadJsonFile(filePath string) ([]byte, error) {
+	var err error
+
+	configData, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	if strings.HasSuffix(filePath, ".yml") || strings.HasSuffix(filePath, ".yaml") {
+		return yaml.YAMLToJSON(configData)
+	} else if !strings.HasSuffix(filePath, ".json") {
+		return nil, fmt.Errorf("unknown suffix. allowed values: .json, .yml .yaml")
+	}
+	return configData, nil
 }
 
 // ShouldValidate validates result

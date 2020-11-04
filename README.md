@@ -12,6 +12,8 @@
 
 ```
 bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/valid/enum1.yml
+
+bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/valid/enum1.json
 ```
 
 ### GoLang API

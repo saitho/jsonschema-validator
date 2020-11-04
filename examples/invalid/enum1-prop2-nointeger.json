@@ -1,0 +1,9 @@
+{
+  "name": "myname",
+  "settings": {
+    "propContainer": {
+      "prop1": "test",
+      "prop2": "test"
+    }
+  }
+}
