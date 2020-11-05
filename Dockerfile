@@ -5,6 +5,6 @@ WORKDIR /build
 RUN go build -o validator .
 
 FROM alpine
-COPY --from=builder /build/validator /app/
-WORKDIR /app
-CMD ["./validator"]
+COPY --from=builder /build/validator /bin/
+WORKDIR /data
+CMD ["/bin/validator"]

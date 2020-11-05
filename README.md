@@ -20,6 +20,13 @@ bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/vali
 
 ### Docker container
 
+You can find the official Docker image on [Docker Hub](https://hub.docker.com/repository/docker/saitho/jsonschema-validator).
+The binary on the Docker container is located at `/bin/validator`.
+
+```
+docker run --rm -u=$(id -u):$(id -g) -v=$(pwd):/app saitho/jsonschema-validator ./schema/project-definition.schema.json ./examples/valid/enum1.yml
+```
+
 ## Development
 
 ### Run Tests
