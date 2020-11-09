@@ -1,8 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "http://stackhead.io/schemas/project-definition.sample.json",
   "title": "Sample definition",
-  "description": "This is NOT the actual schema for project definitions, just a sample for testing",
+  "description": "Example definition used for testing this validator.",
   "type": "object",
   "definitions": {
     "enum1-properties": {
