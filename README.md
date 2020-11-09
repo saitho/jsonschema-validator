@@ -20,7 +20,7 @@ bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/vali
 
 ### Docker container
 
-You can find the official Docker image on [Docker Hub](https://hub.docker.com/repository/docker/saitho/jsonschema-validator).
+You can find the official Docker image on [Docker Hub](https://hub.docker.com/r/saitho/jsonschema-validator).
 The binary on the Docker container is located at `/bin/validator`.
 
 ```
