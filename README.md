@@ -23,9 +23,25 @@ bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/vali
 You can find the official Docker image on [Docker Hub](https://hub.docker.com/r/saitho/jsonschema-validator).
 The binary on the Docker container is located at `/bin/validator`.
 
+Example call (currently broken! Drone works fine)
 ```
 docker run --rm -u=$(id -u):$(id -g) -v=$(pwd):/app saitho/jsonschema-validator ./schema/project-definition.schema.json ./examples/valid/enum1.yml
 ```
+
+### DroneCI
+
+```yaml
+---
+kind: pipeline
+name: Linter
+type: docker
+
+steps:
+  - name: Validate providers.yml
+    image: saitho/jsonschema-validator
+    commands:
+      - /bin/validator ./tests/schema.json ./config/configuration.yml
+ ```
 
 ## Development
 
