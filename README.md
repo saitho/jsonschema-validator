@@ -18,6 +18,24 @@ bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/vali
 
 ### GoLang API
 
+```go
+package main
+
+import validator "github.com/saitho/jsonschema-validator/validator"
+
+result, err := validator.ValidateFile(filePath, schemaPath) // gojsonschema.Result
+errorMessage := validator.ShouldValidate(result)
+if len(errorMessage) == 0 {
+	_, err = fmt.Fprintf(os.Stdout, "The file is valid.\n")
+} else {
+	_, err = fmt.Fprintf(os.Stderr, errorMessage + "\n")
+	if err != nil {
+		panic(err.Error())
+	}
+	os.Exit(1)
+}
+```
+
 ### Docker container
 
 You can find the official Docker image on [Docker Hub](https://hub.docker.com/r/saitho/jsonschema-validator).
