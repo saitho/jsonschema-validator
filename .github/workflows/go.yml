@@ -33,16 +33,24 @@ jobs:
         fi
 
     - name: Build
-      run: go build -v -o ../bin/jsonschema-validator .
+      run: go build -v -o bin/jsonschema-validator .
 
     - name: Test
       run: go test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: binary
+        path: bin/jsonschema-validator
 
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - uses: actions/download-artifact@v2
+        with:
+          name: binary
+          path: bin/jsonschema-validator
       - name: Setup node
         uses: actions/setup-node@v1
         with:
