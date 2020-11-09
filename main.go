@@ -26,11 +26,21 @@ func evaluateResult(result *gojsonschema.Result) bool {
 }
 
 func main() {
+	var schemaPath, filePath string
+	if len(os.Args) < 2 {
+		schemaPath = os.Getenv("SCHEMA_PATH")
+	} else {
+		schemaPath = os.Args[1]
+	}
 	if len(os.Args) < 3 {
+		filePath = os.Getenv("FILE_PATH")
+	} else {
+		filePath = os.Args[2]
+	}
+
+	if len(schemaPath) == 0 || len(filePath) == 0 {
 		panic("Missing argument. Set the schema file path as first command argument and the file you want to validate as second argument.")
 	}
-	var schemaPath = os.Args[1]
-	var filePath = os.Args[2]
 
 	hasErrors := false
 	stat, _ := os.Stat(filePath)

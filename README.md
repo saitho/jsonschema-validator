@@ -10,10 +10,14 @@
 
 ### Binary
 
+Set the schema as first argument and the file you want to validate as second argument.
+
+Alternatively you may also use the environment variables `SCHEMA_PATH` and `FILE_PATH`.
+
 ```
 bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/valid/enum1.yml
 
-bin/jsonschema-validator ./schema/project-definition.schema.json ./examples/valid/enum1.json
+SCHEMA_PATH=./schema/project-definition.schema.json FILE_PATH=./examples/valid/enum1.json bin/jsonschema-validator
 ```
 
 ### GoLang API
