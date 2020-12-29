@@ -27,7 +27,8 @@ package main
 
 import validator "github.com/saitho/jsonschema-validator/validator"
 
-result, err := validator.ValidateFile(filePath, schemaPath) // gojsonschema.Result
+// There is also ValidateFileWithInput if you want to validate with the schema data itself (byte[])
+result, err := validator.ValidateFile(filePath, schemaPath) // result is gojsonschema.Result
 errorMessage := validator.ShouldValidate(result)
 if len(errorMessage) == 0 {
 	_, err = fmt.Fprintf(os.Stdout, "The file is valid.\n")

@@ -2,6 +2,7 @@ package validator
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -36,6 +37,21 @@ func TestValidDefinitions(t *testing.T) {
 		for _, file := range collectYamlFiles("../examples/valid") {
 			Convey(fmt.Sprintf("file %s should validate", file), func() {
 				result, err := ValidateFile(file, getSchemaFile())
+				So(err, ShouldBeNil)
+				So(result, ShouldValidate)
+			})
+		}
+	})
+}
+
+func TestValidDefinitionsBySchemaData(t *testing.T) {
+	Convey("test valid definitions", t, func() {
+		for _, file := range collectYamlFiles("../examples/valid") {
+			Convey(fmt.Sprintf("file %s should validate", file), func() {
+				schemaContent, err := ioutil.ReadFile(getSchemaFile())
+				So(err, ShouldBeNil)
+
+				result, err := ValidateFileWithInput(file, schemaContent)
 				So(err, ShouldBeNil)
 				So(result, ShouldValidate)
 			})

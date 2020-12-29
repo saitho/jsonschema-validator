@@ -51,6 +51,20 @@ func ValidateFile(filePath string, schemaPath string) (*gojsonschema.Result, err
 	return gojsonschema.Validate(schemaLoader, documentLoader)
 }
 
+// ValidateFileWithInput validates the contents of filePath with the given schema file content
+func ValidateFileWithInput(filePath string, schema []byte) (*gojsonschema.Result, error) {
+	var err error
+	schemaLoader := gojsonschema.NewBytesLoader(schema)
+
+	configJson, err := loadJsonFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+	documentLoader := gojsonschema.NewBytesLoader(configJson)
+
+	return gojsonschema.Validate(schemaLoader, documentLoader)
+}
+
 // Loads the contents of a given JSON file.
 // If the file is a YAML/YML file, it will be converted to JSON
 func loadJsonFile(filePath string) ([]byte, error) {
